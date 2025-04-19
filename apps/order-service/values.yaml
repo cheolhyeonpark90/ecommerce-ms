@@ -1,9 +1,9 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: order-service
+  tag: 0.1.0
   pullPolicy: IfNotPresent
-  tag: "latest"
 
 service:
   type: ClusterIP
@@ -21,11 +21,11 @@ ingress:
 
 resources:
   limits:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 500m
+    memory: 512Mi
   requests:
-    cpu: 50m
-    memory: 64Mi
+    cpu: 250m
+    memory: 256Mi
 
 autoscaling:
   enabled: false
