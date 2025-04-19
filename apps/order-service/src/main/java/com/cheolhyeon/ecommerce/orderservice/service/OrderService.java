@@ -1,7 +1,9 @@
 package com.cheolhyeon.ecommerce.orderservice.service;
 
 import com.cheolhyeon.ecommerce.orderservice.domain.Order;
+import com.cheolhyeon.ecommerce.orderservice.domain.aggregate.OrderAggregate;
 import com.cheolhyeon.ecommerce.orderservice.dto.OrderRequest;
+import com.cheolhyeon.ecommerce.orderservice.infrastructure.eventstore.EventStore;
 import com.cheolhyeon.ecommerce.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,10 +13,14 @@ import org.springframework.stereotype.Service;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final EventStore eventStore;
 
-    public Order create(OrderRequest request) {
-        Order order = Order.create(request.userId());
-        return orderRepository.save(order);
+    public String create(OrderRequest request) {
+        OrderAggregate aggregate = new OrderAggregate(request.userId());
+        aggregate.getEvents().forEach(event -> {
+            eventStore.append(aggregate.getOrderId(), event);
+        });
+        return aggregate.getOrderId();
     }
 
     public Order getById(Long id) {
