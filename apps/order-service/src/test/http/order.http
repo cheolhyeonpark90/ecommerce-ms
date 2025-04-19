@@ -9,7 +9,7 @@ Content-Type: application/json
 ###
 
 ### 주문 단건 조회 (ID = 1)
-GET http://localhost:8080/orders/1
+GET http://localhost:8080/orders/20980aea-b3fb-4eb0-8140-2b25cd3e1021
 Accept: application/json
 
 ###

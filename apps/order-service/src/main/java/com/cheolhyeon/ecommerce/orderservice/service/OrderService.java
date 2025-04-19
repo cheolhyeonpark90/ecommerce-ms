@@ -17,9 +17,7 @@ public class OrderService {
 
     public String create(OrderRequest request) {
         OrderAggregate aggregate = new OrderAggregate(request.userId());
-        aggregate.getEvents().forEach(event -> {
-            eventStore.append(aggregate.getOrderId(), event);
-        });
+        aggregate.getEvents().forEach(event -> eventStore.append(aggregate.getOrderId(), event));
         return aggregate.getOrderId();
     }
 
